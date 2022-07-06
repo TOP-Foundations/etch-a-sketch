@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Etch-A-Sketch</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet">
+<style>
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color:darkslategrey;
+        object-fit: cover;
+        font-family: 'Courgette', cursive;
+        margin: 0;
+    }
+
+    h1 {
+        font-size: 2vw;
+        margin: 10px 0 10px 0;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 70vw;
+        height: 95vh;
+        background: #ed0417;
+        border-radius: 40px;
+        margin: 10px 0 10px 0;
+    }
+
+    #grid:hover {
+        cursor: none;
+    }
+
+    #clear {
+        width: 200px;
+        height: 30px;
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 60px;
+        background: white;
+        border: none;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+    #clear:hover {
+        cursor: pointer;
+        transform: scale(1.05);
+    }
+
+    .knobs {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .knob1, .knob2 {
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        background: white;
+    }
+
+    .knob1 {
+        margin: 0 0 20px 50px;
+    }
+
+    .knob2 {
+        margin: 0 50px 20px 0;
+    }
+
+</style>
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>Etch-A-Sketch</h1>
+
+        <div id="grid"></div>
+
+        <div class="knobs">
+            <div class="knob1"></div>
+            <div class="knob2"></div>
+        </div>
+
+        <button id="clear">Start Over</button>
+    
+    </div>
+    
+</body>
+
+<script>
+    
+const gridContainer = document.getElementById('grid');
+const button = document.getElementById('clear');
+
+let row = 16;
+let column = row;
+
+
+// This exercise asked me to set the grid values using DOM manipulation in JS
+gridContainer.style.display = 'grid';
+gridContainer.style.gridTemplateColumns = `repeat(${column}, 1fr)`;
+gridContainer.style.gridTemplateRows = `repeat(${row}, 1fr)`;
+gridContainer.style.width = '40vw';
+gridContainer.style.height = '80vh';
+gridContainer.style.border = '1px solid black';
+gridContainer.style.background = 'white';
+gridContainer.style.borderRadius = '40px';
+gridContainer.style.overflow = 'hidden';
+
+// Initial div creation for grid container
+for (i = 0; i < row * column; i++){
+
+    let newDiv = document.createElement('div');
+    gridContainer.appendChild(newDiv);
+    
+    let alpha = 0;
+
+    newDiv.addEventListener('mouseover', function(){
+        newDiv.style.backgroundColor = `rgba(0, 0, 0, ${alpha += 0.25})`;
+    })
+
+    button.addEventListener('click', function(){
+         newDiv.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+         newDiv.remove();
+    })
+    
+}
+
+// Prompt + re-draw
+button.addEventListener('click', function(){
+    let newSize = prompt('How many squares per row + column would you like?');
+
+    if (newSize > 100){
+        newSize = 100;
+    } else if (newSize < 0 || !newSize){
+        newSize = 16;
+    } 
+
+    column = row = newSize;
+    gridContainer.style.gridTemplateColumns = `repeat(${column}, 1fr)`;
+    gridContainer.style.gridTemplateRows = `repeat(${row}, 1fr)`;
+
+    for (i = 0; i < row * column; i++){
+
+        let newDiv = document.createElement('div');
+        gridContainer.appendChild(newDiv);
+
+        let alpha = 0;
+
+        newDiv.addEventListener('mouseover', function(){
+            newDiv.style.backgroundColor = `rgba(0, 0, 0, ${alpha += 0.25})`;
+        })
+
+        button.addEventListener('click', function(){
+            newDiv.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+            newDiv.remove();
+        })
+
+    }
+})
+
+</script>
+
+</html>
